@@ -5,14 +5,14 @@
         android:versionName="0.1-SNAPSHOT"
         package="ru.wilemyvu.android.smsapp">
 
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="25"/>
+    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="27"/>
 
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
-    <application android:icon="@drawable/appicon">
+    <application android:icon="@drawable/appicon" android:label="Wilem's SMS app">
 
-        <activity android:name="ru.wilemyvu.android.smsapp.MixedMessagesListActivity"
+        <activity android:name="ru.wilemyvu.android.smsapp.mixedmessagelist.MixedMessagesListActivity"
                 android:label="Wilem's SMS app">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

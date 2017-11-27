@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -22,7 +23,9 @@
            - so no kotlin-stdlib-jre8, no source 1.8 java.
          -->
         <android.buildtools.version>25.0.3</android.buildtools.version>
-        <android.api.version>26</android.api.version>
+        <android.localsdk.version>4.4.2_r4</android.localsdk.version> <!-- = sdkhome/platforms/android-19 -->
+        <android.support.version>27.0.1</android.support.version>
+        <android.api.version>27</android.api.version> <!-- must match support library version -->
     </properties>
 
     <repositories>
@@ -46,27 +49,27 @@
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <version>7.1.1_r3</version>
+            <version>${android.localsdk.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.android.support</groupId>
             <artifactId>support-compat</artifactId>
-            <version>26.1.0</version>
+            <version>${android.support.version}</version>
             <type>aar</type>
-            <exclusions>
-                <exclusion> <!-- wants nonexistent .jar, actually needs .aar -->
-                    <groupId>android.arch.lifecycle</groupId>
-                    <artifactId>runtime</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
-            <groupId>android.arch.lifecycle</groupId>
-            <artifactId>runtime</artifactId>
-            <version>1.0.0</version>
+            <groupId>com.android.support</groupId>
+            <artifactId>support-core-utils</artifactId>
+            <version>${android.support.version}</version>
             <type>aar</type>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>appcompat-v7</artifactId>
+            <version>${android.support.version}</version>
+            <type>aar</type>
         </dependency>
 
         <dependency>
@@ -88,6 +91,25 @@
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
 
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>target/generated-sources/r</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -119,14 +141,22 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>compile</id>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>default-testCompile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>java-compile</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>testCompile</id>
+                        <id>java-test-compile</id>
                         <phase>test-compile</phase>
                         <goals>
                             <goal>testCompile</goal>
@@ -145,6 +175,12 @@
                         <buildTools>${android.buildtools.version}</buildTools>
                     </sdk>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default-generate-sources</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
