@@ -71,6 +71,12 @@
             <version>${android.support.version}</version>
             <type>aar</type>
         </dependency>
+        <dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>recyclerview-v7</artifactId>
+            <version>${android.support.version}</version>
+            <type>aar</type>
+        </dependency>
 
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

@@ -1,0 +1,1 @@
+@call amvn android:generate-sources

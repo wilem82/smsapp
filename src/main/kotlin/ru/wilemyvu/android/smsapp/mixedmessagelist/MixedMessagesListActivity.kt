@@ -13,8 +13,8 @@ import android.provider.Telephony
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutCompat
-import android.support.v7.widget.ListViewCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import ru.wilemyvu.android.smsapp.PermissionReq
 
@@ -25,29 +25,34 @@ class MixedMessagesListActivity : AppCompatActivity() {
 
     private lateinit var ctx: Context
 
-    private lateinit var messagesListViewAdapter: ListAdapter
-    private lateinit var messagesListView: ListViewCompat
+    private lateinit var messagesListViewAdapter: RecyclerAdapter
+    private lateinit var messagesListView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ctx = applicationContext
 
-        messagesListViewAdapter = ru.wilemyvu.android.smsapp.mixedmessagelist.ListAdapter(
+        messagesListViewAdapter = ru.wilemyvu.android.smsapp.mixedmessagelist.RecyclerAdapter(
                 ctx,
                 Typeface.createFromAsset(assets, "PTM55FT.ttf")
         )
 
-        setTheme(android.support.v7.appcompat.R.style.Theme_AppCompat)
-        setContentView(LinearLayoutCompat(ctx).also {
-            it.addView(ListViewCompat(ctx).also {
-                messagesListView = it
-            })
+        setTheme(android.support.v7.appcompat.R.style.Theme_AppCompat_DayNight)
+        setContentView(RecyclerView(ctx).also {
+            it.layoutManager = LinearLayoutManager(ctx)
+            messagesListView = it
         })
 
     }
 
     override fun onStart() {
         super.onStart()
+
+        checkAndAskPermission(
+                PermissionReq.PhoneNumResolution,
+                "To display names instead of phone numbers, permission to read contacts is needed.  This is optional.",
+                { messagesListViewAdapter.notifyDataSetChanged() }
+        )
 
         checkAndAskPermission(
                 PermissionReq.ReadSms,
@@ -57,12 +62,6 @@ class MixedMessagesListActivity : AppCompatActivity() {
                     startSmsLoader()
                 },
                 { finishAffinity() }
-        )
-
-        checkAndAskPermission(
-                PermissionReq.PhoneNumResolution,
-                "To display names instead of phone numbers, permission to read contacts is needed.  This is optional.",
-                { messagesListViewAdapter.notifyDataSetChanged() }
         )
 
     }

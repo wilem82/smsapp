@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnboundNsPrefix -->
 <manifest
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:versionCode="0"
@@ -12,13 +13,20 @@
 
     <application android:icon="@drawable/appicon" android:label="Wilem's SMS app">
 
-        <activity android:name="ru.wilemyvu.android.smsapp.mixedmessagelist.MixedMessagesListActivity"
-                android:label="Wilem's SMS app">
+        <activity android:name="ru.wilemyvu.android.smsapp.mixedmessagelist.MixedMessagesListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--<activity android:name="ru.wilemyvu.android.smsapp.TestActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
     </application>
 
 </manifest>
